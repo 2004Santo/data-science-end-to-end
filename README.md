@@ -13,7 +13,7 @@ No clones ni hagas push a este repositorio directamente. Cada estudiante trabaja
 
 ## Sobre el ambiente de desarrollo
 
-Las primeras dos semanas del curso son de formulación y diseño del proyecto: no requieren código ni un entorno de desarrollo todavía. Desde la Semana 3, Sesión 1 ("Contenedores para pipelines de proyectos"), cada laboratorio produce código real: empaquetas el entorno de tu proyecto con Docker (Semana 3, Sesión 1) y aprovisionas su almacenamiento con Terraform en Google Cloud (Semana 3, Sesión 2). Cada carpeta de `laboratorios/` que lo requiera incluye sus propios requisitos e instrucciones de instalación en su `README.md`; no hay un ambiente único para todo el curso, porque cada estudiante empaqueta el ambiente de su propio proyecto, no uno compartido.
+Las primeras dos semanas del curso son de formulación y diseño del proyecto: no requieren código ni un entorno de desarrollo todavía. Desde la Sesión "Contenedores para pipelines de proyectos", cada laboratorio produce código: empaquetas el entorno de tu proyecto con Docker y aprovisionas su almacenamiento en Google Cloud con Terraform (Semana 3, Sesión 2). Cada carpeta de `laboratorios/` que lo requiera incluye sus propios requisitos e instrucciones de instalación en su `README.md`; no hay un ambiente único para todo el curso, porque cada estudiante empaqueta el ambiente de su propio proyecto, no uno compartido.
 
 ## Estructura del repositorio
 
