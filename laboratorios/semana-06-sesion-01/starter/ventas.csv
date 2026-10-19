@@ -1,0 +1,13 @@
+id_venta,categoria,cantidad,precio_unitario
+1,hogar,1,7.38
+2,ropa,2,26.21
+3,hogar,1,69.29
+4,hogar,1,61.1
+5,electronica,3,45.5
+6,ropa,1,15.0
+7,electronica,2,120.0
+8,hogar,4,9.99
+9,ropa,3,22.5
+10,electronica,1,300.0
+11,hogar,2,18.75
+12,ropa,2,40.0
