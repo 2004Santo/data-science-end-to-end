@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  # TODO: reemplaza por el nombre real de tu modelo de staging
+  - name: stg_TODO
+    columns:
+      # TODO: elige la columna que deberia identificar cada fila sin repetirse
+      - name: TODO_columna_identificadora
+        tests:
+          - unique
+          - not_null

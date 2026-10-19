@@ -1,0 +1,22 @@
+# TODO: dale a este flow un id y un namespace propios de tu proyecto.
+id: TODO
+namespace: TODO
+
+tasks:
+  - id: TODO
+    type: io.kestra.plugin.scripts.shell.Commands
+    # TODO: agrega el bloque retry, pensando en qué tan inestable es tu fuente de datos real.
+    # retry:
+    #   type: constant
+    #   maxAttempt: TODO
+    #   interval: TODO
+    commands:
+      # TODO: reemplaza por el comando real que corre tu script de ingesta.
+      - echo "Procesando datos para {{ trigger.date ?? execution.startDate }}"
+      - python TODO.py
+
+# TODO: agrega un trigger Schedule con la frecuencia adecuada para tu proyecto (no todos necesitan correr todos los dias).
+# triggers:
+#   - id: TODO
+#     type: io.kestra.plugin.core.trigger.Schedule
+#     cron: "TODO"

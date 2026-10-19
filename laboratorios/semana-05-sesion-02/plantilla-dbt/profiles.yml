@@ -1,0 +1,8 @@
+# TODO: reemplaza por el nombre de tu perfil (debe coincidir con "profile" de dbt_project.yml)
+# y por la ruta del archivo .duckdb que ya construiste en la Sesion 1.
+proyecto_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: TODO.duckdb
