@@ -19,6 +19,8 @@ Las primeras dos semanas del curso son de formulación y diseño del proyecto: n
 
 ```
 laboratorios/           Laboratorio de cada clase, uno por carpeta
+  semana-01-sesion-02/
+  semana-02-sesion-01/
   semana-02-sesion-02/
   semana-03-sesion-01/
   semana-03-sesion-02/
