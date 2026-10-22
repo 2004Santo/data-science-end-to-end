@@ -35,37 +35,30 @@ Tu pipeline de la Semana 4 lleva semanas acumulando el histórico de tu proyecto
 
 _(tu respuesta)_
 
-## Ejercicio 1: leer y filtrar un CSV con Spark
+## Ejercicio 1: ventas por categoría, con Spark
 
-Enunciado: [`starter/ventas.csv`](./starter/ventas.csv) tiene ventas de una tienda (categoría, cantidad, precio unitario), la misma tarea de siempre, ahora con Spark en vez de pandas.
+Archivo: [`starter/ejercicio1_spark.py`](./starter/ejercicio1_spark.py), sobre [`starter/ventas.csv`](./starter/ventas.csv): la misma pregunta de la Semana 5 (monto total por categoría), ahora con la API de DataFrames de Spark. El script ya arranca Spark, lee el archivo e imprime cada paso; faltan 4 `TODO`. Córrelo una vez antes de tocar nada:
 
-**Respuesta 1, antes de ver la solución:** si `spark.read.csv(...)` no ejecuta nada todavía porque es parte de un plan perezoso, ¿qué instrucción de las que ya conoces de pandas tendría que cambiar de comportamiento aquí?
+```
+cd laboratorios/semana-06-sesion-01/starter
+python3 ejercicio1_spark.py
+```
 
-_(tu respuesta)_
-
-**Respuesta 2:** si agregaras un `.filter()` más entre `spark.read.csv(...)` y `.show()`, sin llamar a ninguna acción entre medio, ¿cuántas veces se ejecuta realmente el archivo completo?
-
-_(tu respuesta)_
-
-**La formulación completa, tal como la resuelvo yo:**
-
-_(anota aquí el script completo, mientras se revisa en clase)_
-
-## Ejercicio 2: agregación con Spark
-
-Enunciado: la misma pregunta de negocio de la Semana 5 (monto total por categoría), esta vez con la API de DataFrames de Spark en vez de SQL sobre DuckDB.
-
-**Respuesta 1, antes de ver la solución:** ¿qué método de la API de DataFrames de Spark esperas que sea el equivalente directo del `GROUP BY` de SQL que ya usaste con DuckDB?
+**Respuesta 1 (TODO 1), antes de ver la solución:** con el filtro escrito, `spark.read.csv(...)` y `.filter(...)` todavía no ejecutan nada. ¿En qué línea del script se lee de verdad el archivo?
 
 _(tu respuesta)_
 
-**Respuesta 2:** cuando `resumen.write.csv(...)` corre, ¿esperas que el resultado quede en un solo archivo `.csv`, como haría `df.to_csv()` de pandas, o en algo distinto?
+**Respuesta 2 (TODO 2 y 3):** ¿qué método de la API de Spark esperas que sea el equivalente del `GROUP BY` de SQL que usaste con DuckDB? ¿Cuántas filas tendrá `resumen`?
 
 _(tu respuesta)_
 
-**La formulación completa, tal como la resuelvo yo:**
+**Respuesta 3 (TODO 4):** cuando `resumen.write.csv(...)` corre, ¿esperas un solo archivo `.csv`, como `df.to_csv()` de pandas, o algo distinto?
 
-_(anota aquí el script completo, mientras se revisa en clase)_
+_(tu respuesta)_
+
+**Lo que confirmó la salida, TODO por TODO:**
+
+_(anota los números y lo que apareció en `resumen_por_categoria/`)_
 
 ## Durante el ConcepTest
 
@@ -78,6 +71,26 @@ _(tu voto)_
 _(tu respuesta)_
 
 **Después de discutir en pareja, ¿cambiaste de voto? ¿Por qué?**
+
+_(tu respuesta)_
+
+## Ejercicio 2: costo de envíos por ciudad
+
+Solo o en pareja. Archivo: [`starter/ejercicio2_envios.py`](./starter/ejercicio2_envios.py), sobre [`starter/envios.csv`](./starter/envios.csv). Son los mismos pasos del Ejercicio 1 sobre otro archivo, más uno nuevo (TODO 5): calcular el mismo total con pandas para confirmar el resultado de Spark. Al final, el script imprime una comprobación por TODO: completa los 5 hasta que todas digan `OK`.
+
+```
+python3 ejercicio2_envios.py
+```
+
+**Respuesta 1:** ¿qué ciudad tiene el costo total más alto, y cuántos envíos quedaron fuera por no estar entregados?
+
+_(tu respuesta)_
+
+**Respuesta 2:** en el TODO 5, pandas leyó el archivo completo en memoria. ¿Por qué tiene sentido verificar contra pandas en este archivo, y por qué no lo harías con el histórico de la pregunta de apertura, el que ya no cabe en la RAM de tu laptop?
+
+_(tu respuesta)_
+
+**Si terminas antes:** en el Ejercicio 1, `monto_total` de hogar salió `215.23000000000002`. ¿Es un error de Spark? ¿Lo verías también con pandas?
 
 _(tu respuesta)_
 

@@ -23,6 +23,10 @@ data/processed/
 *.tfstate
 *.tfstate.*
 
+# Warehouse local de DuckDB (se regenera al correr cada laboratorio)
+*.duckdb
+*.duckdb.wal
+
 # dbt y Spark (artefactos que se regeneran al correr)
 target/
 dbt_packages/
