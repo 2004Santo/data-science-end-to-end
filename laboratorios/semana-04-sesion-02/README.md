@@ -8,7 +8,7 @@
 
 ## Requisitos antes de esta sesión
 
-Confirma que tienes pandas instalado (`pip install pandas` si hace falta) y acceso al dataset real de tu proyecto, aunque sea en una versión parcial o de muestra.
+Confirma que tienes pandas (ya viene en el Codespace; en tu laptop, `pip install -r requirements.txt` desde la raíz del repositorio) y acceso al dataset real de tu proyecto, aunque sea en una versión parcial o de muestra.
 
 ## Antes de empezar
 

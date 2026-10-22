@@ -8,19 +8,13 @@
 
 ## Requisitos antes de esta sesión
 
-pandas ya lo tienes desde la Semana 4. Instala matplotlib:
-
-```
-pip install matplotlib
-```
-
-Verifica con:
+pandas y matplotlib ya vienen en el Codespace. En tu laptop, instálalos con `pip install -r requirements.txt` desde la raíz del repositorio. Verifica con:
 
 ```
 python3 -c "import matplotlib; print(matplotlib.__version__)"
 ```
 
-Los scripts de hoy guardan cada gráfico como imagen en una carpeta `figuras/`. También puedes correr el mismo código en un notebook de Jupyter, donde el gráfico aparece debajo de la celda.
+Los scripts de hoy guardan cada gráfico como imagen en una carpeta `figuras/`. Ábrelas desde el explorador de archivos de VS Code. También puedes correr el mismo código en un notebook de Jupyter (en el Codespace, crea un archivo `.ipynb` y elige el kernel de Python 3.11), donde el gráfico aparece debajo de la celda.
 
 ## Antes de empezar
 

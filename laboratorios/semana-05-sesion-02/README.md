@@ -9,11 +9,7 @@
 ## Requisitos antes de esta sesión
 
 1. **El warehouse de DuckDB de la Sesión 1**, con los datos de tu proyecto ya cargados (el archivo `.duckdb` del Ejercicio 3 de la sesión pasada).
-2. Instala dbt con el adaptador de DuckDB:
-   ```
-   pip install dbt-core dbt-duckdb
-   ```
-   Verifica con:
+2. **dbt con el adaptador de DuckDB:** ya viene en el Codespace. En tu laptop, instálalo con `pip install -r requirements.txt` desde la raíz del repositorio. Verifica con:
    ```
    dbt --version
    ```

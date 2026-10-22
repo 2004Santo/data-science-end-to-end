@@ -17,3 +17,18 @@ data/processed/
 
 # Logs
 *.log
+
+# Terraform (el estado guarda las credenciales en texto plano: nunca se sube)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# dbt y Spark (artefactos que se regeneran al correr)
+target/
+dbt_packages/
+spark-warehouse/
+metastore_db/
+derby.log
+
+# Material reemplazado (no se sube)
+_to_delete/

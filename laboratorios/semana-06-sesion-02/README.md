@@ -9,10 +9,7 @@
 ## Requisitos antes de esta sesión
 
 1. **Docker y Docker Compose**, los mismos de la Semana 3.
-2. Instala el cliente de Python para Kafka:
-   ```
-   pip install kafka-python
-   ```
+2. **El cliente de Python para Kafka (`kafka-python`):** ya viene en el Codespace. En tu laptop, instálalo con `pip install -r requirements.txt` desde la raíz del repositorio.
 3. Levanta Redpanda desde este laboratorio:
    ```
    docker compose up -d

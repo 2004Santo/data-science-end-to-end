@@ -8,19 +8,13 @@
 
 ## Requisitos antes de esta sesión
 
-Instala scikit-learn:
-
-```
-pip install scikit-learn
-```
-
-Verifica con:
+scikit-learn ya viene en el Codespace. En tu laptop, instálalo con `pip install -r requirements.txt` desde la raíz del repositorio. Verifica con:
 
 ```
 python3 -c "import sklearn; print(sklearn.__version__)"
 ```
 
-Este laboratorio usa `sparse_output=False` en `OneHotEncoder`, disponible desde scikit-learn 1.2. Si tu versión es anterior, actualízala con `pip install --upgrade scikit-learn`.
+Este laboratorio usa `sparse_output=False` en `OneHotEncoder`, disponible desde scikit-learn 1.2. El `requirements.txt` del repositorio ya fija una versión posterior.
 
 Ten a mano el script de features de tu proyecto de la sesión pasada.
 

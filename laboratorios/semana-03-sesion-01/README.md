@@ -8,7 +8,9 @@
 
 ## Requisitos antes de esta sesión
 
-Instala [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows, Mac o Linux) y confirma que funciona corriendo `docker run hello-world` en tu terminal. Si tu proyecto necesita GPU o un ambiente que Docker Desktop no soporta bien en tu máquina, avísame antes de esta sesión.
+Abre el Codespace de tu fork (ver [Tu ambiente de desarrollo](../../README.md#tu-ambiente-de-desarrollo) en el README del repositorio): Docker ya viene instalado. Confirma que funciona corriendo `docker run hello-world` en la terminal. Si prefieres trabajar en tu laptop, instala [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Windows, Mac o Linux) y corre la misma verificación. Si tu proyecto necesita GPU o un ambiente que no corre bien en ninguna de las dos opciones, avísame antes de esta sesión.
+
+El Codespace también es un contenedor, pero no reemplaza el Dockerfile que construyes hoy. El Codespace trae las herramientas del curso, iguales para todos. La imagen de tu proyecto trae solo lo que tu proyecto necesita para correr en cualquier máquina, incluida una que nunca abrió este repositorio.
 
 ## Antes de empezar
 

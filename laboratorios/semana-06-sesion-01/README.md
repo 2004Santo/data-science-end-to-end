@@ -4,26 +4,18 @@
 
 **Lectura previa de esta sesión:** ["Batch and Streaming in the World of Data Science and Data Engineering"](https://medium.com/capital-one-tech/batch-and-streaming-in-the-world-of-data-science-and-data-engineering-2cc029cdf554), Capital One Tech.
 
-**Referencia de esta sesión:** [Data Engineering Zoomcamp, módulo de batch processing (DataTalksClub)](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/06-batch). Este laboratorio usa Spark en modo local (`local[*]`), sobre los núcleos de tu propia laptop, sin ningún clúster real: el mismo criterio que ya usó este curso con Docker/Terraform locales (Semana 3), Kestra local (Semana 4) y DuckDB local (Semana 5).
+**Referencia de esta sesión:** [Data Engineering Zoomcamp, módulo de batch processing (DataTalksClub)](https://github.com/DataTalksClub/data-engineering-zoomcamp/tree/main/06-batch). Este laboratorio usa Spark en modo local (`local[*]`), sobre los núcleos de tu propia máquina (tu Codespace o tu laptop), sin ningún clúster real: el mismo criterio que ya usó este curso con Docker/Terraform locales (Semana 3), Kestra local (Semana 4) y DuckDB local (Semana 5).
 
 ## Requisitos antes de esta sesión
 
-1. **Java 8, 11 o 17 instalado.** Verifica con:
+1. **Java 17 y PySpark 3.5.3.** En el Codespace ya vienen instalados. En tu laptop, instala OpenJDK 17 (en Mac, con Homebrew: `brew install openjdk@17`) y después corre `pip install -r requirements.txt` desde la raíz del repositorio, que fija PySpark en la versión 3.5.3 (compatible con Java 8/11/17; la rama 4.x de PySpark exige Java 17 o superior). Verifica con:
    ```
    java -version
-   ```
-   Si no tienes ninguno instalado, instala OpenJDK 17 (en Mac, con Homebrew: `brew install openjdk@17`).
-2. Instala PySpark, fijado a la versión 3.5.3 (compatible con Java 8/11/17; la rama 4.x de PySpark exige Java 17 o superior):
-   ```
-   pip install pyspark==3.5.3
-   ```
-   Verifica con:
-   ```
    python3 -c "import pyspark; print(pyspark.__version__)"
    ```
-3. Ten a mano el archivo histórico real que tu pipeline orquestado de la Semana 4 genera para tu proyecto, y al menos una transformación de pandas que ya escribiste sobre ese archivo en una sesión anterior (Semana 4, Sesión 2, o Semana 5).
+2. Ten a mano el archivo histórico real que tu pipeline orquestado de la Semana 4 genera para tu proyecto, y al menos una transformación de pandas que ya escribiste sobre ese archivo en una sesión anterior (Semana 4, Sesión 2, o Semana 5).
 
-**Si ves un error de red al arrancar Spark (`UnknownHostException`) que no te deja ver la salida del programa:** corre el script con la variable de ambiente `SPARK_LOCAL_IP=127.0.0.1` antes del comando, por ejemplo `SPARK_LOCAL_IP=127.0.0.1 python3 mi_job.py`. No es un error de tu código.
+**Si ves un error de red al arrancar Spark (`UnknownHostException`) que no te deja ver la salida del programa:** corre el script con la variable de ambiente `SPARK_LOCAL_IP=127.0.0.1` antes del comando, por ejemplo `SPARK_LOCAL_IP=127.0.0.1 python3 mi_job.py`. No es un error de tu código. En el Codespace esta variable ya viene configurada, así que ahí no deberías verlo.
 
 ## Antes de empezar
 

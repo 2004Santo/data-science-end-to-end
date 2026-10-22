@@ -8,12 +8,12 @@
 
 ## Requisitos antes de esta sesión
 
-1. **Docker Desktop instalado y corriendo**, el mismo de las sesiones pasadas.
+1. **Docker**, el mismo de las sesiones pasadas. Si trabajas en el Codespace, ábrelo para esta sesión con una máquina de 4 núcleos ("Change machine type"): Kestra y su Postgres necesitan más memoria que los laboratorios anteriores.
 2. Levanta Kestra localmente antes de la sesión, con el `docker-compose.yml` de [`starter/docker-compose.yml`](./starter/docker-compose.yml):
    ```
    docker compose up -d
    ```
-   Abre `localhost:8080` en el navegador: deberías ver la interfaz de Kestra. Si es la primera vez que arranca, puede tardar 20-30 segundos en quedar lista.
+   Abre `localhost:8080` en el navegador (en el Codespace, desde la pestaña **Ports** de VS Code, puerto 8080): deberías ver la pantalla de inicio de sesión de Kestra. Entra con el usuario `admin@kestra.io` y la contraseña `Admin1234`, definidos en el mismo `docker-compose.yml`. Si es la primera vez que arranca, puede tardar 20-30 segundos en quedar lista.
 
 Este `docker-compose.yml` es una versión simplificada del oficial de Kestra: quita el `healthcheck` de Postgres (fuera del vocabulario de Docker Compose de este curso) porque el reintento de conexión, igual que en la Sesión 2 de la semana pasada, se resuelve del lado de cada flow, no de Docker.
 

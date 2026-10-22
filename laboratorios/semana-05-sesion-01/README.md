@@ -9,11 +9,7 @@
 ## Requisitos antes de esta sesión
 
 1. **Python con `pandas` ya instalado**, el mismo de sesiones pasadas.
-2. Instala DuckDB:
-   ```
-   pip install duckdb
-   ```
-   Verifica con:
+2. **DuckDB:** ya viene en el Codespace. En tu laptop, instálalo con `pip install -r requirements.txt` desde la raíz del repositorio, que fija la misma versión del Codespace. Verifica con:
    ```
    python -c "import duckdb; print(duckdb.__version__)"
    ```
