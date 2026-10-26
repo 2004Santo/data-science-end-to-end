@@ -19,19 +19,41 @@ ZONAS_MANHATTAN = ["Midtown", "Upper East Side", "Upper West Side", "Lower Manha
 # va de JFK Airport a una zona de Manhattan, o de una zona de Manhattan a
 # JFK Airport. Imprime cuantos viajes la tienen en 1, y la tarifa minima
 # y maxima de esos viajes.
+va_a_jfk = (viajes["zona_destino"] == "JFK Airport") & viajes["zona_origen"].isin(ZONAS_MANHATTAN)
+sale_de_jfk = (viajes["zona_origen"] == "JFK Airport") & viajes["zona_destino"].isin(ZONAS_MANHATTAN)
+viajes["es_tarifa_fija"] = (va_a_jfk | sale_de_jfk).astype(int)
+fijos = viajes[viajes["es_tarifa_fija"] == 1]
+print("Viajes con tarifa fija:", len(fijos), "| tarifa minima:", fijos["tarifa"].min(), "| maxima:", fijos["tarifa"].max())
 
 # TODO 2: codificado, el resultado de codificar zona_origen con one-hot
 # (pd.get_dummies), con el prefijo "origen" y dtype=int. Imprime los
 # nombres de las columnas nuevas.
-codificado = None
+codificado = pd.get_dummies(viajes["zona_origen"], prefix="origen", dtype=int)
+print("Columnas one-hot:", list(codificado.columns))
 
 # TODO 3: codifica zona_origen de forma ordinal: un numero entero por
 # zona, en orden alfabetico, en una columna origen_ordinal.
+orden = {zona: numero for numero, zona in enumerate(sorted(viajes["zona_origen"].unique()))}
+viajes["origen_ordinal"] = viajes["zona_origen"].map(orden)
+print("Codigos ordinales:", orden)
 
 # TODO 4: disponible_al_pedir, un diccionario con cada columna original
 # del dataset y True o False segun exista en el momento en que alguien
 # pide el taxi (antes del viaje). Imprime la decision de cada una.
-disponible_al_pedir = None
+disponible_al_pedir = {
+    "id_viaje": True,
+    "fecha_hora_inicio": True,
+    "zona_origen": True,
+    "zona_destino": True,
+    "distancia_km": True,
+    "duracion_min": False,
+    "pasajeros": True,
+    "metodo_pago": True,
+    "tarifa": False,
+    "propina": False,
+}
+for columna, disponible in disponible_al_pedir.items():
+    print(f"{columna}: {'disponible' if disponible else 'no disponible'} al pedir")
 
 
 def comprobar(numero, condicion):

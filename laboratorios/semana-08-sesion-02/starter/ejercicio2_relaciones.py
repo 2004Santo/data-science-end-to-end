@@ -19,24 +19,50 @@ viajes = pd.read_csv("viajes_taxi.csv")
 # TODO 1: quita solo los errores que el Ejercicio 1 ya confirmo (tarifa
 # 999.99 y duracion negativa). No quites los demas atipicos. Imprime
 # cuantas filas quedan.
-limpios = viajes
+limpios = viajes.query("tarifa != 999.99 and duracion_min >= 0")
+print("Filas despues de quitar errores:", len(limpios))
 
 # TODO 2: grafico de dispersion de distancia_km (eje x) contra tarifa
 # (eje y), guardado en figuras/distancia_vs_tarifa.png. Mira el grafico
 # antes de seguir: busca puntos que no sigan la tendencia general y
 # cuentalos con un filtro.
+plt.figure()
+plt.scatter(limpios["distancia_km"], limpios["tarifa"], s=5)
+plt.title("Distancia vs tarifa")
+plt.xlabel("distancia_km")
+plt.ylabel("tarifa")
+plt.savefig("figuras/distancia_vs_tarifa.png")
+plt.close()
+
+# Linea horizontal en 70 USD: tarifa fija del aeropuerto.
+tarifa_fija = limpios[limpios["tarifa"] == 70]
+print("Viajes con tarifa exacta de 70:", len(tarifa_fija))
+print(tarifa_fija.groupby(["zona_origen", "zona_destino"]).size())
+
+# Columna vertical en distancia 0: viajes que cobran sin registrar kilometros.
+distancia_cero = limpios[limpios["distancia_km"] == 0]
+print("Viajes con distancia 0:", len(distancia_cero))
+print(distancia_cero[["duracion_min", "tarifa"]].describe().round(2))
 
 # TODO 3: resumen_propina, con la propina promedio, la cantidad de viajes
 # y la cantidad de viajes con propina 0, por metodo de pago.
-resumen_propina = None
+resumen_propina = limpios.groupby("metodo_pago").agg(
+    propina_promedio=("propina", "mean"),
+    viajes=("propina", "size"),
+    viajes_propina_0=("propina", lambda p: (p == 0).sum()),
+)
+print(resumen_propina.round(2))
+print("Viajes sin metodo de pago:", limpios["metodo_pago"].isna().sum())
 
 # TODO 4: correlaciones, la correlacion de distancia_km, duracion_min,
 # pasajeros y propina con la tarifa.
-correlaciones = None
+correlaciones = limpios[["distancia_km", "duracion_min", "pasajeros", "propina", "tarifa"]].corr()["tarifa"]
+print(correlaciones.drop("tarifa").round(2))
 
 # TODO 5: cuantos viajes tienen pasajeros vacio y cuantos tienen 0.
-pasajeros_vacios = None
-pasajeros_cero = None
+pasajeros_vacios = limpios["pasajeros"].isna().sum()
+pasajeros_cero = (limpios["pasajeros"] == 0).sum()
+print("Pasajeros vacio:", pasajeros_vacios, "| Pasajeros en 0:", pasajeros_cero)
 
 
 def comprobar(numero, condicion):

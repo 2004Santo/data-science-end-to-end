@@ -49,15 +49,18 @@ El máximo de `tarifa` (999.99) y el mínimo de `duracion_min` (−74). Una tari
 
 **Respuesta 2 (TODO 2):** abre `figuras/hist_tarifa.png` después del TODO 2. ¿Por qué casi todo el histograma queda comprimido a la izquierda?
 
-No. El IQR solo dice que un valor es poco común, no que esté mal. Lo averiguo mirando qué tienen en común los atípicos (`value_counts` de la tarifa, origen y destino). De los 334 atípicos, solo 15 son errores (tarifa 999.99). 302 tienen una tarifa exacta de 70 en viajes entre JFK y Manhattan, que es la tarifa fija del aeropuerto, y los 17 restantes son viajes largos y reales entre JFK y Queens/Brooklyn (19 a 24 km).
+Porque las 15 tarifas de 999.99 estiran el eje x hasta 1000. Con 50 barras, cada barra cubre unos 20 USD, así que casi todos los viajes (el 75% cuesta 32.55 o menos) caen en las primeras tres barras y el resto del gráfico queda vacío, salvo una barra pequeña en 999.99. El boxplot muestra lo mismo: la caja es una línea aplastada abajo.
 
 **Respuesta 3 (TODO 3 y 4):** la regla del IQR marca más de 300 viajes con tarifa atípica. ¿Esperas que todos sean errores? ¿Cómo lo averiguarías?
 
-[`starter/EDA.py`](./starter/EDA.py) revisa tipos, faltantes y duplicados, imprime `describe()`, guarda el histograma y el boxplot de la tarifa, marca atípicos con la regla del IQR (límites −13.85 y 60.40, 334 viajes) y grafica tarifa contra distancia con y sin atípicos. Encontró dos errores confirmados: 15 tarifas de 999.99 y 10 duraciones negativas. Con los atípicos, la correlación tarifa–distancia es 0.23; al quitar solo esos errores sube a 0.96. El script corre dentro de Docker con `docker compose up --build` desde `starter/`, y las figuras quedan en `starter/data-contenedor/`.
+No. El IQR solo dice que un valor es poco común, no que esté mal. Lo averiguo mirando qué tienen en común los atípicos (`value_counts` de la tarifa, origen y destino). De los 334 atípicos, solo 15 son errores (tarifa 999.99). 302 tienen una tarifa exacta de 70 en viajes entre JFK y Manhattan, que es la tarifa fija del aeropuerto, y los 17 restantes son viajes largos y reales entre JFK y Queens/Brooklyn (19 a 24 km).
 
 **Lo que confirmó la salida, TODO por TODO:**
 
-_(anota el límite superior, cuántos atípicos marcó y cómo se reparten)_
+- TODO 1: `describe()` muestra el máximo de `tarifa` en 999.99 (percentil 75 de 32.55, desviación estándar de 70.99 frente a una media de 31.39) y el mínimo de `duracion_min` en −74. Faltan 120 `pasajeros` y 60 `metodo_pago`.
+- TODO 2: en el histograma casi todos los viajes quedan en las primeras barras y aparece una barra aislada en 999.99.
+- TODO 3: Q1 = 13.99, Q3 = 32.55, IQR = 18.56 y límite superior de 60.40. Marca 334 viajes sobre el límite.
+- TODO 4: de los 334, 15 son el error de captura (999.99), 302 tienen la tarifa exacta de 70.00 y 17 son otros viajes largos. Aparte, hay 10 duraciones negativas. Errores confirmados: 15 + 10 = 25 filas.
 
 ## Durante el ConcepTest
 
@@ -101,9 +104,9 @@ Usa el archivo que tu pipeline de la Semana 7 deja listo para modelar, y la plan
 
 Reemplaza la ruta del archivo y el nombre de la columna que tu modelo va a predecir. Corre los pasos 1 a 3.
 
-Dataset: OBT del PSet 2 (`OBT.OBT_EMERGENCIAS_CANTON_DIA`, exportada de Snowflake), una fila por cantón y día. El modelo clasifica alta demanda a t+3 (`y_3`): `y_3 = 1` cuando `obj_n_emergencias_t3` supera el P90 del cantón para ese día de la semana, calculado solo con el periodo de entrenamiento. Como `y_3` todavía no existe en la OBT, el EDA usa `obj_n_emergencias_t3` como objetivo.
+Dataset: muestra de la OBT del PSet 2 (`OBT.OBT_EMERGENCIAS_CANTON_DIA`, exportada de Snowflake), una fila por cantón y día, en `data/processed/obt_emergencias_muestra.csv`. Para que pese poco tiene solo 10 cantones (Quito, Guayaquil, Cuenca, Ibarra, Portoviejo, Tulcán, La Concordia, Montalvo, Paltas y Nangaritza, de grandes a muy pequeños) y solo las 16 columnas que usan los scripts. El modelo clasifica alta demanda a t+3 (`y_3`): `y_3 = 1` cuando `obj_n_emergencias_t3` supera el P90 del cantón para ese día de la semana, calculado solo con el periodo de entrenamiento. Como `y_3` todavía no existe en la OBT, el EDA usa `obj_n_emergencias_t3` como objetivo.
 
-422.912 filas × 37 columnas, 224 cantones, de julio de 2021 a agosto de 2026. Los faltantes son los esperados: rezagos al inicio de cada serie (`lag_1d` 224, `lag_7d` y `media_prev_7d` 1.568, `lag_14d` 3.136, `lag_28d` y `media_prev_28d` 6.272), objetivos al final (`obj_n_emergencias_t3` 672, `obj_n_emergencias_t7` 1.568) y `nombre_feriado` en los días que no son feriado (406.784). El IQR marcó 53.357 atípicos en `obj_n_emergencias_t3`.
+18.880 filas × 16 columnas, 10 cantones con 1.888 días cada uno, de julio de 2021 a agosto de 2026. Los faltantes son los esperados: rezagos al inicio de cada serie (`lag_1d` 10, `lag_7d` y `media_prev_7d` 70, `media_prev_28d` 280) y objetivos al final (`obj_n_emergencias_t3` 30, los últimos 3 días de cada cantón). El IQR marcó 3.750 atípicos en `obj_n_emergencias_t3`.
 
 ### Paso 2: relaciones (10 minutos)
 
@@ -117,15 +120,15 @@ Para cada hallazgo, escribe qué encontraste, el número o el gráfico que lo co
 
 **Hallazgo 1:**
 
-Los atípicos del IQR no son errores: los 53.357 corresponden a 76 cantones grandes que aparecen completos, con los 1.885 días cada uno (Quito, Guayaquil, Loja...). Quito y Guayaquil suman el 39,1% de las emergencias, mientras que 36 cantones tienen una mediana de 2 o menos por día. Por eso la correlación global entre `n_emergencias` y el objetivo (0.95) mide el tamaño del cantón, no la capacidad de predecir. **Cambio en el modelo:** no se quita ninguna fila. Cada cantón se compara con su propio P90, y las métricas se reportan por grupo de tamaño para que Quito y Guayaquil no dominen la evaluación.
+Los atípicos del IQR no son errores: los 3.750 son Quito (1.881) y Guayaquil (1.869), que aparecen casi completos. Entre los dos suman el 79,5% de las emergencias de la muestra, mientras que Nangaritza tiene una mediana de 2 o menos por día. Por eso la correlación global entre `n_emergencias` y el objetivo (0.94) mide el tamaño del cantón, no la capacidad de predecir. **Cambio en el modelo:** no se quita ninguna fila. Cada cantón se compara con su propio P90, y las métricas se reportan por grupo de tamaño para que Quito y Guayaquil no dominen la evaluación.
 
 **Hallazgo 2:**
 
-Hay un ciclo semanal fuerte: el domingo promedia 52,6 emergencias y el martes 35,5. Por eso `n_emergencias` y `lag_7d` tienen correlación negativa con el conteo de t+3 (Quito: −0.33 y −0.37), mientras que t−4, el mismo día de la semana que t+3, tiene 0.73 en Quito, 0.85 en Guayaquil y 0.66 en Cuenca. **Cambio en el modelo:** agregar a la OBT un rezago `lag_4d` para h=3. Para h=7 sirve `n_emergencias`, porque t ya cae el mismo día de la semana que t+7.
+Hay un ciclo semanal fuerte: el domingo promedia 555,8 emergencias por cantón de la muestra y el martes 391,5. Por eso `n_emergencias` y `lag_7d` tienen correlación negativa con el conteo de t+3 (Quito: −0.33 y −0.37), mientras que t−4, el mismo día de la semana que t+3, tiene 0.73 en Quito, 0.85 en Guayaquil y 0.66 en Cuenca. **Cambio en el modelo:** agregar a la OBT un rezago `lag_4d` para h=3. Para h=7 sirve `n_emergencias`, porque t ya cae el mismo día de la semana que t+7.
 
 **Hallazgo 3:**
 
-El volumen baja con los años: de 10.342 emergencias por día en 2021 a 8.870 en 2025 (−14%). Con un P90 fijo calculado hasta junio de 2025, la tasa de `y_3 = 1` cambia según el año: 13,3% en 2021 y 5,9% en 2024. En promedio solo el 8% de los casos es clase 1. Enero de 2024 (periodo anómalo) tiene 1,4%, y un feriado en t+3 sube la tasa a 19,6% (frente a 7,6%). **Cambio en el modelo:** división temporal en lugar de aleatoria, métricas para clases desbalanceadas (precision/recall, no accuracy), evaluar un P90 móvil con ventana reciente, decidir explícitamente cómo tratar enero de 2024 y mantener `es_feriado_t3` como variable.
+El volumen baja con los años: en los 10 cantones de la muestra, de 4.941 emergencias por día en 2021 a 4.473 en 2025 (−9,5%). Con un P90 fijo calculado hasta junio de 2025, la tasa de `y_3 = 1` cambia según el año: 14,5% en 2021, 8,3% en 2024 y 6,0% en 2025. En promedio solo el 8,4% de los casos es clase 1. Enero de 2024 (periodo anómalo) tiene 1,0%, y un feriado en t+3 sube la tasa a 22,1% (frente a 7,8%). **Cambio en el modelo:** división temporal en lugar de aleatoria, métricas para clases desbalanceadas (precision/recall, no accuracy), evaluar un P90 móvil con ventana reciente, decidir explícitamente cómo tratar enero de 2024 y mantener `es_feriado_t3` como variable.
 
 ## Antes de la próxima sesión
 

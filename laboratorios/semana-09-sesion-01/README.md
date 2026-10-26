@@ -49,15 +49,17 @@ Como número, la 23 y la 0 están a 23 unidades, lo más lejos posible. En el re
 
 **Respuesta 2 (TODO 3):** sin el TODO 3, el Paso 4 muestra un solo grupo. Con la hora pico construida, ¿esperas que la tarifa por kilómetro sea más alta o más baja en hora pico? ¿Por qué, si la tarifa depende de la distancia y de la duración?
 
-El tráfico. La duración es alta cuando hay tráfico, y en hora pico hay más tráfico. En los datos, en hora pico el viaje tarda 4.12 min por km frente a 3.36 fuera de ella, así que `es_hora_pico` le da al modelo una parte de esa información sin usar algo que todavía no existe al pedir el taxi.
+Más alta. La tarifa cobra por distancia y también por tiempo, y en hora pico hay más tráfico: cada kilómetro tarda más y por eso cuesta más. La salida lo confirma: la mediana sube de 3.22 a 3.52 USD por km.
 
 **Respuesta 3:** la duración del viaje no existe al pedir el taxi, pero la hora sí. ¿Qué parte de lo que la duración le diría al modelo puede traer `es_hora_pico`?
 
-[`starter/mi_primer_feature_eng.py`](./starter/mi_primer_feature_eng.py) quita solo los errores confirmados (quedan 2975 viajes) y a partir de `fecha_hora_inicio` crea `hora`, `dia_semana`, `es_fin_de_semana` (sábado y domingo), `es_hora_pico` (lunes a viernes de 7 a 9 y de 16 a 19, 888 viajes) y la hora como ciclo (`hora_sin`, `hora_cos`). También codifica las zonas con one-hot y el método de pago de forma ordinal. Para ver si la hora pico aporta, compara la tarifa por km sin los viajes de tarifa fija ni los de distancia 0: 4.15 USD/km en hora pico frente a 3.92 fuera de ella, y la tarifa promedio sube de 20.83 a 23.52 con casi la misma distancia (6.7 km frente a 6.5). Sí aporta. Se corre con `python3 mi_primer_feature_eng.py` desde `starter/`, o con Docker (`docker build -t semana09 .` y `docker run --rm semana09`).
+El tráfico. La duración es alta cuando hay tráfico, y en hora pico hay más tráfico. En los datos, en hora pico el viaje tarda 4.12 min por km frente a 3.36 fuera de ella, así que `es_hora_pico` le da al modelo una parte de esa información sin usar algo que todavía no existe al pedir el taxi.
 
 **Lo que confirmó la salida, TODO por TODO:**
 
-_(anota la tarifa por kilómetro en cada grupo y las dos distancias del Paso 5)_
+- TODO 1 y 2: `hora` y `dia_semana` salen de `fecha_hora_inicio` (0 es lunes), y `es_fin_de_semana` vale 1 en sábado y domingo. Quedan 2975 viajes sin los errores confirmados.
+- TODO 3: `es_hora_pico` vale 1 en 888 viajes (lunes a viernes, de 7 a 9 y de 16 a 19). En el Paso 4, sin tarifa fija ni distancia 0, la mediana de la tarifa por km es 3.22 USD fuera de hora pico y 3.52 en hora pico.
+- TODO 4: con `hora_sin` y `hora_cos`, en el Paso 5 la 23 y la 0 quedan a 0.26, la misma distancia que la 11 y la 12. Como número, la primera pareja está a 23 y la segunda a 1.
 
 ## Durante el ConcepTest
 
@@ -126,7 +128,7 @@ Para cada una: de qué hallazgo o conocimiento del dominio sale, qué evidencia 
 
 **Feature 2:**
 
-`dia_semana_t3`, el día de la semana del día que se predice (1 = lunes, 7 = domingo). Sale del mismo ciclo semanal: el domingo promedia 52,6 emergencias por cantón y el martes 35,5. El script imprime el objetivo promedio por `dia_semana_t3` para confirmarlo. Existe al predecir porque la fecha de t+3 se conoce desde t. Es categórica: para una regresión logística usaría one-hot (7 columnas), porque con números del 1 al 7 el modelo creería que el domingo está "lejos" del lunes y que la demanda sube en línea recta durante la semana; para un modelo de árboles también serviría la codificación ordinal.
+`dia_semana_t3`, el día de la semana del día que se predice (1 = lunes, 7 = domingo). Sale del mismo ciclo semanal. El script imprime el objetivo promedio por `dia_semana_t3`: en los 10 cantones de la muestra es 555,8 cuando t+3 es domingo y 391,5 cuando es martes, y sube de forma continua del martes al domingo. Existe al predecir porque la fecha de t+3 se conoce desde t. Es categórica: para una regresión logística usaría one-hot (7 columnas), porque con números del 1 al 7 el modelo creería que el domingo está "lejos" del lunes y que la demanda sube en línea recta durante la semana; para un modelo de árboles también serviría la codificación ordinal.
 
 ## Antes de la próxima sesión
 

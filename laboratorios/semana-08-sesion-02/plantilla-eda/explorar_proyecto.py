@@ -81,7 +81,7 @@ for canton in ["QUITO", "GUAYAQUIL", "CUENCA"]:
 # Hallazgo 3: el volumen baja con los anios, asi que un P90 fijo cambia la tasa de alta demanda.
 # Etiqueta y_3 como en el PSet 1: P90 por canton y dia de la semana de t+3, solo con entrenamiento.
 print("\n--- Hallazgo 3: deriva temporal y etiqueta ---")
-print("Emergencias por dia (todo el pais):")
+print("Emergencias por dia (cantones de la muestra):")
 print((datos.groupby("anio")["n_emergencias"].sum() / datos.groupby("anio")["fecha"].nunique()).round(0))
 
 CORTE = pd.Timestamp("2025-07-01")

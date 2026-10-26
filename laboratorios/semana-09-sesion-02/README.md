@@ -47,19 +47,21 @@ python3 ejercicio1_fuga.py
 
 **Respuesta 1, antes de ver la solución:** en la versión del compañero, ¿en qué línea entra el conjunto de prueba al entrenamiento? ¿Qué número de la salida lo delata?
 
-En el `fit_transform` del imputador y del escalador sobre todo el dataset, antes de `train_test_split`. Ahí la mediana, la media y la desviación estándar se calculan también con los viajes de prueba.
+En `escalador.fit_transform(imputador.fit_transform(X))`, que corre sobre todo el dataset antes de `train_test_split`: ahí la mediana, la media y la desviación estándar se calculan también con los viajes de prueba. Lo delata `Filas que vio el escalador: 2975`, todo el dataset, cuando el entrenamiento solo tiene 2380 filas.
 
 **Respuesta 2 (TODO 1 y 3):** sin resolver, la versión correcta dice que tiene 2975 filas de prueba. ¿Qué está midiendo ese error, si prueba y entrenamiento son las mismas filas?
 
-Espero que cambie muy poco, porque con miles de viajes la mediana y la media casi no se mueven. Y así pasó: 2.5276 con fuga y 2.5274 sin fuga. Que casi no cambie no significa que no había fuga: la fuga está en el procedimiento. Con pocos datos, con una columna que cambia en el tiempo o con una fuga más grave (como la duración), la diferencia sí sería grande.
+Mide el error de entrenamiento, no el de prueba: el modelo se evalúa con los mismos viajes con los que aprendió, así que dice qué tan bien memoriza y no qué tan bien funciona con viajes nuevos. Es un número optimista que no sirve para saber cómo le irá en producción.
 
 **Respuesta 3:** ¿cuánto esperas que cambie el error absoluto medio en prueba al corregir la fuga? Si casi no cambia, ¿significa que no había fuga?
 
-[`starter/corregir_fuga.py`](./starter/corregir_fuga.py) corre las dos versiones con las mismas columnas (`distancia_km`, `pasajeros` y las features de la sesión pasada). La versión con fuga imputa y escala con todo el dataset y después divide. La corregida divide primero y mete el imputador, el escalador y la regresión lineal en un `Pipeline`, que aprende solo con entrenamiento. MAE en prueba: 2.5276 con fuga y 2.5274 corregida. La mediana de la distancia es 6.93 con todo el dataset y 6.94 solo con entrenamiento. Se corre con `python3 corregir_fuga.py` desde `starter/`, o con Docker (`docker build -t semana09s2 .` y `docker run --rm semana09s2`).
+Espero que cambie muy poco, porque con miles de viajes la mediana y la media casi no se mueven. Y así pasó: 2.5375 con fuga y 2.5373 sin fuga. Que casi no cambie no significa que no había fuga: la fuga está en el procedimiento. Con pocos datos, con una columna que cambia en el tiempo o con una fuga más grave (como la duración), la diferencia sí sería grande.
 
 **Lo que confirmó la salida, TODO por TODO:**
 
-_(anota las filas que vio cada escalador y los dos errores)_
+- Versión del compañero: el escalador vio 2975 filas (todo el dataset), con una media de distancia de 8.5034. Error absoluto medio en prueba: 2.5375.
+- TODO 1: con `train_test_split` (80/20, `random_state=42`) quedan 2380 filas de entrenamiento y 595 de prueba.
+- TODO 2 y 3: el `Pipeline` imputa, escala y entrena solo con entrenamiento. El escalador vio 2380 filas, con una media de distancia de 8.5576. Error absoluto medio en prueba: 2.5373, casi igual al del compañero.
 
 ## Durante el ConcepTest
 
@@ -119,13 +121,13 @@ Sí: predice t+3 a partir de lo que pasó hasta t. Divido por fecha con el mismo
 
 Completa la plantilla y córrela. Anota la forma de los conjuntos de entrenamiento y prueba ya preparados, y la lista de columnas que produce.
 
-[`plantilla-pipeline/pipeline_proyecto.py`](./plantilla-pipeline/pipeline_proyecto.py). Con la OBT de 224 cantones del 1 de julio de 2021 al 31 de agosto de 2026, el entrenamiento tiene 327.264 filas (224 × 1.461 días) y la prueba 94.976 (224 × 424 días). Las columnas son 6 numéricas + 7 de `dia_semana_t3` + una por provincia + `es_feriado_t3`:
+[`plantilla-pipeline/pipeline_proyecto.py`](./plantilla-pipeline/pipeline_proyecto.py). Con la muestra de la OBT (10 cantones del 1 de julio de 2021 al 31 de agosto de 2026), el entrenamiento queda con forma (14.610, 24): 10 × 1.461 días. La prueba queda con (4.240, 24): 10 × 424 días. Las 24 columnas son 6 numéricas + 7 de `dia_semana_t3` + 10 de `cod_provincia` (una por provincia de la muestra) + `es_feriado_t3`:
 
 ```
 ['numericas__n_emergencias', 'numericas__lag_1d', 'numericas__lag_4d', 'numericas__lag_7d',
  'numericas__media_prev_7d', 'numericas__media_prev_28d',
  'categoricas__dia_semana_t3_1', ..., 'categoricas__dia_semana_t3_7',
- 'categoricas__cod_provincia_01', ..., 'ya_listas__es_feriado_t3']
+ 'categoricas__cod_provincia_01', ..., 'categoricas__cod_provincia_23', 'ya_listas__es_feriado_t3']
 ```
 
 ## Antes de la próxima sesión
