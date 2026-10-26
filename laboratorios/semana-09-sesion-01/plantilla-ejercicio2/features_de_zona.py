@@ -9,14 +9,43 @@ ZONAS_MANHATTAN = ["Midtown", "Upper East Side", "Upper West Side", "Lower Manha
 # va de JFK Airport a una zona de Manhattan, o de una zona de Manhattan a
 # JFK Airport. Imprime cuantos viajes la tienen en 1, y la tarifa minima
 # y maxima de esos viajes.
+desde_jfk = (viajes["zona_origen"] == "JFK Airport") & viajes["zona_destino"].isin(ZONAS_MANHATTAN)
+hacia_jfk = viajes["zona_origen"].isin(ZONAS_MANHATTAN) & (viajes["zona_destino"] == "JFK Airport")
+viajes["es_tarifa_fija"] = (desde_jfk | hacia_jfk).astype(int)
+
+fijos = viajes[viajes["es_tarifa_fija"] == 1]
+print("Viajes con es_tarifa_fija = 1:", len(fijos))
+print("Tarifa minima:", fijos["tarifa"].min(), "Tarifa maxima:", fijos["tarifa"].max())
 
 # TODO 2: codifica zona_origen con one-hot (pd.get_dummies), con el
 # prefijo "origen" y dtype=int. Imprime los nombres de las columnas
 # nuevas.
+one_hot = pd.get_dummies(viajes["zona_origen"], prefix="origen", dtype=int)
+print("\nColumnas one-hot:", len(one_hot.columns))
+print(list(one_hot.columns))
 
 # TODO 3: codifica zona_origen de forma ordinal: un numero entero por
 # zona, en orden alfabetico, en una columna origen_ordinal.
+zonas = sorted(viajes["zona_origen"].unique())
+viajes["origen_ordinal"] = viajes["zona_origen"].map({zona: i for i, zona in enumerate(zonas)})
+print("\nCodificacion ordinal (1 columna):")
+print(viajes[["zona_origen", "origen_ordinal"]].drop_duplicates().sort_values("origen_ordinal"))
 
 # TODO 4: para cada columna original del dataset, decide si existe en el
 # momento en que alguien pide el taxi (antes del viaje) e imprime la
 # decision.
+existe_al_pedir = {
+    "id_viaje": True,
+    "fecha_hora_inicio": True,
+    "zona_origen": True,
+    "zona_destino": True,
+    "distancia_km": True,   # la distancia estimada de la ruta se calcula al pedir
+    "duracion_min": False,  # solo se sabe al terminar el viaje
+    "pasajeros": True,
+    "metodo_pago": True,
+    "tarifa": False,        # es lo que se quiere predecir
+    "propina": False,       # se paga al final
+}
+print("\n¿Existe al pedir el taxi?")
+for columna, existe in existe_al_pedir.items():
+    print(f"  {columna}: {'si' if existe else 'no'}")

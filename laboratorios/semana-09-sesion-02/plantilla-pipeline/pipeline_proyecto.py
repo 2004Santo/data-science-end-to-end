@@ -1,26 +1,38 @@
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# TODO: el archivo de tu proyecto, con las 2 features de la sesion pasada
-# ya agregadas (o el script que las agrega, antes de esta linea).
-datos = pd.read_csv("TODO_ruta_del_archivo.csv")
+# OBT del PSet 2 (ECU 911), la misma de la Semana 8.
+datos = pd.read_csv(
+    r"C:\Users\DELL\Downloads\obt_emergencias_canton_dia.csv",
+    dtype={"cod_canton": str, "cod_provincia": str},
+    parse_dates=["fecha"],
+)
 
-OBJETIVO = "TODO_columna_objetivo"
-NUMERICAS = ["TODO_numerica_1", "TODO_numerica_2"]
-CATEGORICAS = ["TODO_categorica_1"]
-YA_LISTAS = []
+# Las 2 features de la sesion pasada.
+datos = datos.sort_values(["cod_canton", "fecha"])
+datos["lag_4d"] = datos.groupby("cod_canton")["n_emergencias"].shift(4)
+datos["dia_semana_t3"] = (datos["dia_semana"] + 2) % 7 + 1
+
+# Los ultimos 3 dias de cada canton no tienen objetivo: no sirven para entrenar.
+datos = datos.dropna(subset=["obj_n_emergencias_t3"])
+
+OBJETIVO = "obj_n_emergencias_t3"
+NUMERICAS = ["n_emergencias", "lag_1d", "lag_4d", "lag_7d", "media_prev_7d", "media_prev_28d"]
+CATEGORICAS = ["dia_semana_t3", "cod_provincia"]
+YA_LISTAS = ["es_feriado_t3"]
 
 X = datos[NUMERICAS + CATEGORICAS + YA_LISTAS]
 y = datos[OBJETIVO]
 
-# TODO: decide como dividir. Si tus filas tienen fecha y vas a predecir
-# el futuro, divide por fecha (entrenamiento antes de una fecha de corte,
-# prueba despues) en vez de al azar.
-X_ent, X_prueba, y_ent, y_prueba = train_test_split(X, y, test_size=0.2, random_state=42)
+# El modelo predice el futuro a partir de filas con fecha: se divide por
+# fecha, con el mismo corte de la Semana 8.
+CORTE = pd.Timestamp("2025-07-01")
+en_entrenamiento = datos["fecha"] < CORTE
+X_ent, X_prueba = X[en_entrenamiento], X[~en_entrenamiento]
+y_ent, y_prueba = y[en_entrenamiento], y[~en_entrenamiento]
 
 preparacion = ColumnTransformer([
     ("numericas", Pipeline([
