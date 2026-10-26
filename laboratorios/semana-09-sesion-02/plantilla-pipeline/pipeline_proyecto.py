@@ -4,9 +4,10 @@ from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-# OBT del PSet 2 (ECU 911), la misma de la Semana 8.
+# Muestra de la OBT del PSet 2 (ECU 911): 10 cantones y solo las columnas que se usan.
+# Va en data/processed/ (no se sube a Git).
 datos = pd.read_csv(
-    r"C:\Users\DELL\Downloads\obt_emergencias_canton_dia.csv",
+    "../../../data/processed/obt_emergencias_muestra.csv",
     dtype={"cod_canton": str, "cod_provincia": str},
     parse_dates=["fecha"],
 )

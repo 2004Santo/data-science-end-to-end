@@ -1,9 +1,10 @@
 import pandas as pd
 
-# La misma ruta que usaste en la exploracion de la Semana 8: OBT del PSet 2 (ECU 911).
+# Muestra de la OBT del PSet 2 (ECU 911): 10 cantones y solo las columnas que se usan.
+# Va en data/processed/ (no se sube a Git).
 # Los codigos DPA se leen como texto para no perder el cero inicial (0101 = Cuenca).
 datos = pd.read_csv(
-    r"C:\Users\DELL\Downloads\obt_emergencias_canton_dia.csv",
+    "../../../data/processed/obt_emergencias_muestra.csv",
     dtype={"cod_canton": str, "cod_provincia": str},
     parse_dates=["fecha"],
 )
